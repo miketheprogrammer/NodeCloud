@@ -1,0 +1,29 @@
+{
+  "name": "node-stream-cluster",
+  "description": "An Evented Network Stream Clustering Solution.",
+  "version": "0.0.0",
+  "engines": {
+    "node": ">=10.0"
+  },
+  "dependencies": {
+    "sylvester": ">= 0.0.8"
+  },
+  "scripts" : {
+    "test" : "tap ./test/*.js"
+  },
+  "devDependencies" : {
+    "tap" : "~0.4.0"
+  },
+  "repository" :
+  { "type" : "git"
+  , "url" : "http://github.com/miketheprogrammer/node-ml.git"
+  },
+  "author": "Michael Hernandez <michael.hernandez1988@gmail.com>",
+  "keywords": ["Node", "Stream", "Cluster", "child_process","spawn","child","master","slave","parent"],
+  "main": "./lib/index.js",
+  "maintainers": [{
+    "name": "Michael Hernandez",
+    "email": "michael.hernandez1988@gmail.com",
+    "web": "http://miketheprogrammer.com"
+  }]
+}
