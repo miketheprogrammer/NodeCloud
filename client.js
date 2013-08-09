@@ -10,8 +10,9 @@ var mux = MuxDemux();
 
 exports.createClient = function ( node ) {
     node.accepts['heartbeat'] = function( remoteUUID ) {
-        console.log('Received Heartbeat request from : ' 
-                    + remoteUUID + '\r\n');
+        //console.log('Received Heartbeat request from : ' 
+        //            + remoteUUID + '\r\n');
+        node.parent = remoteUUID;
         node.out.emit('heartbeat-ack', 'aknowledged by ' 
                       + node.uuid +'\r\n', node.serialize());
     }
@@ -20,7 +21,7 @@ exports.createClient = function ( node ) {
     var outStream = mux.createStream('emit');
     EmitStream(node.out).pipe(outStream);
     mux.on('connection', function(stream) {
-        console.log(stream);
+        //console.log(stream);
         node.in = EmitStream(stream);
         node.applyCallbacks();
         node.out.emit('online', node.uuid);

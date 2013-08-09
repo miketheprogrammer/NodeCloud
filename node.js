@@ -15,14 +15,17 @@ function Node (node) {
         this.stats();
         this.accepts = {
             'heartbeat-ack': function( response, child_node ) {
-                console.log("Server Client Responsed with: " 
-                            + response + '\r\n');
                 var child = JSON.parse(child_node);
                 node.children[child.uuid] = child;
                 node.children_acknowledged[child.uuid] = Date.now();
             },
             'online': function( response ) {
                 console.log("Child " + response + " is online.");
+            },
+            '/': function( request ) {
+                node.numRequests += 1;
+                node.emit('/-res-'+node.parent, "Hello World");
+                
             },
         };
         this._emits = {'heartbeat':true,
@@ -33,6 +36,9 @@ function Node (node) {
         this.connection = undefined;
         this.children = {};
         this.children_acknowledged = {};
+        this.toReplicate = [];
+        this.numRequests = 0;
+        this.debug();
     }
 }
 Node.prototype.stats = function() {        
@@ -43,6 +49,13 @@ Node.prototype.stats = function() {
 };
 Node.prototype.serialize = function() {
     this.stats();
+    
+    var obj = {};
+    for ( var key in this ) {
+        if (this.toReplicate.indexOf(key) != -1){
+            obj[key] = this[key];
+        }
+    }
     return JSON.stringify( {
         uuid: this.uuid,
         pid: this.pid,
@@ -50,11 +63,31 @@ Node.prototype.serialize = function() {
         memoryUsage: this.memoryUsage,
         uptime: this.uptime,
         children: this.children,
+        numRequests: this.numRequests,
     });
+    return JSON.stringify( obj );
+};
+
+Node.prototype.debug = function( ) {
+    var node = this;
+    var a = setInterval(function debug() {
+        //console.log("Total Number of Requests: " + node.numRequests);
+    },1000);
 };
 
 Node.prototype._initialize = function ( ) {
+    var node = this;
+
     this._heartbeat();
+    this.toReplicate = [
+        'uuid',
+        'pid',
+        'version',
+        'memoryUsage',
+        'uptime',
+        'children',
+        'numRequest',
+    ];
 }
 Node.prototype._heartbeat = function ( ) {
     var heartbeat_interval = 200;
@@ -68,7 +101,6 @@ Node.prototype._heartbeat = function ( ) {
             setInterval(function() {
                 min_time = new Date(Date.now() - heartbeat_interval * 5)
                 for ( var key in node.children_acknowledged ) {
-                    console.log("checking " + key);
                     if ( node.children_acknowledged[key] < min_time) {
                         delete node.children[key];
                         delete node.children_acknowledged[key];
@@ -85,7 +117,12 @@ Node.prototype._heartbeat = function ( ) {
 Node.prototype.applyCallbacks = function ( ) {
     for ( var key in this.accepts ) {
         this.in.removeListener(key, this.accepts[key]);
+        this.in.removeListener(key + '-' + this.uuid, this.accepts[key])
+        //Broadcast Event
         this.in.on(key, this.accepts[key]);
+        //Targeted Event
+        this.in.on(key + '-' + this.uuid, this.accepts[key]);
+        
     }
 }
 

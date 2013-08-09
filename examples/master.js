@@ -4,9 +4,10 @@ var Node = require('../node');
 var node = new Node();
 
 node.on('random', function( e ) {
-    console.log(e);
-    node.merge.emit('random', e);
+    //console.log(e);
+    //node.merge.emit('random', e);
 });
+
 
 var master = Master.createMaster(node);
 
@@ -18,6 +19,8 @@ var JSONStream = require('JSONStream');
 var MuxDemux = require("mux-demux");
 var EmitStream = require("emit-stream");
 server.listen(8080);
+var apiserver = require("./server");
+apiserver.createServer(node);
 
 var sock = shoe(function ( stream ) {
     var mdm = MuxDemux();
@@ -32,5 +35,7 @@ var sock = shoe(function ( stream ) {
     },400);
 });
 
+
 sock.install(server, '/sock');
+
 
