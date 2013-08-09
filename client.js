@@ -23,6 +23,7 @@ exports.createClient = function ( node ) {
     mux.on('connection', function(stream) {
         //console.log(stream);
         node.in = EmitStream(stream);
+        node.in.setMaxListeners(20);
         node.applyCallbacks();
         node.out.emit('online', node.uuid);
     });

@@ -24,7 +24,9 @@ function Node (node) {
             },
             '/': function( request ) {
                 node.numRequests += 1;
-                node.emit('/-res-'+node.parent, "Hello World");
+                setTimeout(function() {
+                    node.emit('/-res-'+node.parent, "Hello World:"+node.numRequests);
+                }, 1000);
                 
             },
         };
@@ -33,6 +35,9 @@ function Node (node) {
         this.out = new EventEmitter;
         this.in = new EventEmitter;
         this.merge = new EventEmitter;
+        this.out.setMaxListeners(20);
+        this.in.setMaxListeners(20);
+        this.merge.setMaxListeners(20);
         this.connection = undefined;
         this.children = {};
         this.children_acknowledged = {};
@@ -64,6 +69,7 @@ Node.prototype.serialize = function() {
         uptime: this.uptime,
         children: this.children,
         numRequests: this.numRequests,
+        listenerCount: EventEmitter.listenerCount(this.in,'/-res-'+this.uuid),
     });
     return JSON.stringify( obj );
 };
@@ -115,6 +121,7 @@ Node.prototype._heartbeat = function ( ) {
 }
 
 Node.prototype.applyCallbacks = function ( ) {
+    
     for ( var key in this.accepts ) {
         this.in.removeListener(key, this.accepts[key]);
         this.in.removeListener(key + '-' + this.uuid, this.accepts[key])
@@ -122,13 +129,16 @@ Node.prototype.applyCallbacks = function ( ) {
         this.in.on(key, this.accepts[key]);
         //Targeted Event
         this.in.on(key + '-' + this.uuid, this.accepts[key]);
-        
     }
 }
 
 Node.prototype.on = function(evt, listener) {
-    this.accepts[evt] = listener;
-    this.applyCallbacks();
+    //this.in.removeListener(evt, listener)
+    this.in.on(evt, listener);
+}
+Node.prototype.once = function( evt, listener ) {
+    this.in.setMaxListeners(1000);
+    this.in.once(evt, listener);
 }
 
 Node.prototype.emit = function(evt) {

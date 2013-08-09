@@ -11,10 +11,13 @@ exports.createServer = function(node) {
     process.node = node;
     app.get('/', function(req, res){
         var first = getFirst.apply(process.node);
-        process.node.out.emit('/-'+first , "Please Handle This");
-        node.on('/-res-'+process.node.uuid, function ( response ) {
+        
+        process.node.once('/-res-'+process.node.uuid, function ( response ) {
             res.end(response);
         });
+
+        process.node.out.emit('/-'+first , "Please Handle This");
+
     });
 };
 
