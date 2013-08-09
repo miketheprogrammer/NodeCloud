@@ -10,7 +10,6 @@ node.on('random', function( e ) {
 
 var master = Master.createMaster(node);
 
-
 var shoe = require('shoe');
 var http = require('http');
 var ecstatic = require('ecstatic');
@@ -18,7 +17,7 @@ var server = http.createServer(ecstatic(__dirname + '/static'));
 var JSONStream = require('JSONStream');
 var MuxDemux = require("mux-demux");
 var EmitStream = require("emit-stream");
-server.listen(8080, 'localhost');
+server.listen(8080);
 
 var sock = shoe(function ( stream ) {
     var mdm = MuxDemux();
@@ -29,9 +28,8 @@ var sock = shoe(function ( stream ) {
             .pipe(wr);
     
     setInterval(function() {
-        //wr = mdm.createWriteStream('emit');
-        //EmitStream(node.in).pipe(wr);
-    },100);
+        node.merge.emit('update', true, node.serialize());
+    },400);
 });
 
 sock.install(server, '/sock');

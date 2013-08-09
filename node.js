@@ -17,7 +17,9 @@ function Node (node) {
             'heartbeat-ack': function( response, child_node ) {
                 console.log("Server Client Responsed with: " 
                             + response + '\r\n');
-                node.merge.emit('heartbeat-ack', response, child_node);
+                var child = JSON.parse(child_node);
+                node.children[child.uuid] = child;
+                node.children_acknowledged[child.uuid] = Date.now();
             },
             'online': function( response ) {
                 console.log("Child " + response + " is online.");
@@ -29,7 +31,8 @@ function Node (node) {
         this.in = new EventEmitter;
         this.merge = new EventEmitter;
         this.connection = undefined;
-        this.children = [];
+        this.children = {};
+        this.children_acknowledged = {};
     }
 }
 Node.prototype.stats = function() {        
@@ -46,6 +49,7 @@ Node.prototype.serialize = function() {
         version: this.version,
         memoryUsage: this.memoryUsage,
         uptime: this.uptime,
+        children: this.children,
     });
 };
 
@@ -53,13 +57,29 @@ Node.prototype._initialize = function ( ) {
     this._heartbeat();
 }
 Node.prototype._heartbeat = function ( ) {
-    if ( 'heartbeat' in this._emits )
+    var heartbeat_interval = 200;
+    if ( 'heartbeat' in this._emits ) {
         if ( this._emits['heartbeat'] ) {
             var node = this;
             setInterval(function() {
                 node.out.emit('heartbeat', node.uuid);
-            },200);
+            },heartbeat_interval);
+
+            setInterval(function() {
+                min_time = new Date(Date.now() - heartbeat_interval * 5)
+                for ( var key in node.children_acknowledged ) {
+                    console.log("checking " + key);
+                    if ( node.children_acknowledged[key] < min_time) {
+                        delete node.children[key];
+                        delete node.children_acknowledged[key];
+                        node.merge.emit('expired', key);
+                    }
+                }
+            }, heartbeat_interval*2);
         }
+    }
+
+   
 }
 
 Node.prototype.applyCallbacks = function ( ) {

@@ -6,7 +6,13 @@
     "node": ">=10.0"
   },
   "dependencies": {
-    "sylvester": ">= 0.0.8"
+    "ecstatic": "~0.4.6",
+    "emit-stream": "~0.1.2",
+    "JSONStream": "~0.6.4",
+    "mux-demux": "~3.7.8",
+    "node-uuid": "~1.4.0",
+    "shoe": "~0.0.13"
+
   },
   "scripts" : {
     "test" : "tap ./test/*.js"
