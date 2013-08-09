@@ -11,7 +11,8 @@
     "JSONStream": "~0.6.4",
     "mux-demux": "~3.7.8",
     "node-uuid": "~1.4.0",
-    "shoe": "~0.0.13"
+    "shoe": "~0.0.13",
+    "bouncy": "~3.2.0"
 
   },
   "scripts" : {
