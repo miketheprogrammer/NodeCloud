@@ -11,9 +11,11 @@ var server = http.createServer(ecstatic(__dirname + '/static'));
 var JSONStream = require('JSONStream');
 var MuxDemux = require("mux-demux");
 var EmitStream = require("emit-stream");
+
 server.listen(8080);
+
 var apiserver = require("./server");
-apiserver.createServer(node);
+apiserver.createServer(node, 8000);
 
 var sock = shoe(function ( stream ) {
     var mdm = MuxDemux();

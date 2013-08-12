@@ -10,14 +10,7 @@ exports.createServer = function(node, port, host) {
     app.listen(port);
     process.node = node;
     app.get('/', function(req, res){
-        var first = getFirst.apply(process.node);
-        
-        process.node.once('/-res-'+process.node.uuid, function ( response ) {
-            res.end(response);
-        });
-
-        process.node.out.emit('/-'+first , "Please Handle This");
-
+        res.end("hello world");
     });
 };
 
