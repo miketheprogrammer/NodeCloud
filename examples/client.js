@@ -1,6 +1,4 @@
-var Client = require('../lib/client');
-var Node = require('../lib/node');
+var Factory = require('../lib/factory')
+var client = Factory.NodeFactory(null, {client:{}});
 
-var node = new Node();
-var client_connection = Client.createClient(node);
 
