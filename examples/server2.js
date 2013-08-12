@@ -11,8 +11,6 @@ exports.createServer = function(node, port, host, text) {
     app.listen(port);
     process.node = node;
     app.get('/', function(req, res){
-        
-        console.log(process.node.uuid + " is responding");
         res.end(text);
     });
 };
