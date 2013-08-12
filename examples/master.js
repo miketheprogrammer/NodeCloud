@@ -1,9 +1,8 @@
 var Master = require('../lib/master');
 var Node = require('../lib/node');
+var Factory = require("../lib/factory");
 
-var node = new Node();
-
-var master = Master.createMaster(node);
+var node = Factory.NodeFactory( node , {master:{} });
 
 var shoe = require('shoe');
 var http = require('http');

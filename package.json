@@ -12,11 +12,12 @@
     "mux-demux": "~3.7.8",
     "node-uuid": "~1.4.0",
     "shoe": "~0.0.13",
-    "bouncy": "~3.2.0"
+    "bouncy": "~3.2.0",
+    "instantiate": "~0.1.0"
 
   },
   "scripts" : {
-    "test" : "tap ./test/*.js"
+    "test" : "tap ./tests/*.js"
   },
   "devDependencies" : {
     "tap" : "~0.4.0"
