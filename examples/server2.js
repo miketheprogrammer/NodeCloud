@@ -5,12 +5,15 @@ var getFirst = function(){
         return this.children[key].uuid;
     }
 }
-exports.createServer = function(node, port, host) {
+exports.createServer = function(node, port, host, text) {
+    text = text || "Hello World";
     var app = express();
     app.listen(port);
     process.node = node;
     app.get('/', function(req, res){
-        res.end("hello world");
+        
+        console.log(process.node.uuid + " is responding");
+        res.end(text);
     });
 };
 
