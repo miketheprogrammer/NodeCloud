@@ -1,13 +1,7 @@
-var Master = require('../master');
-var Node = require('../node');
+var Master = require('../lib/master');
+var Node = require('../lib/node');
 
 var node = new Node();
-
-node.on('random', function( e ) {
-    //console.log(e);
-    //node.merge.emit('random', e);
-});
-
 
 var master = Master.createMaster(node);
 
