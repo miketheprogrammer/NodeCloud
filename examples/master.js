@@ -14,7 +14,7 @@ var EmitStream = require("emit-stream");
 
 server.listen(8080);
 
-var apiserver = require("./server");
+var apiserver = require("./serverbounce");
 apiserver.createServer(node, 8000);
 
 var sock = shoe(function ( stream ) {
