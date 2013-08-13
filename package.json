@@ -24,7 +24,7 @@
   },
   "repository" :
   { "type" : "git"
-  , "url" : "http://github.com/miketheprogrammer/node-ml.git"
+  , "url" : "http://github.com/miketheprogrammer/NodeCloud.git"
   },
   "author": "Michael Hernandez <michael.hernandez1988@gmail.com>",
   "keywords": ["Node", "Stream", "Cluster", "child_process","spawn","child","master","slave","parent"],
