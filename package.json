@@ -1,7 +1,7 @@
 {
-  "name": "node-stream-cluster",
+  "name": "NodeCloud",
   "description": "An Evented Network Stream Clustering Solution.",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "engines": {
     "node": ">=10.0"
   },
