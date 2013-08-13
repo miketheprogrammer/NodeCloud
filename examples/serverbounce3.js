@@ -16,14 +16,23 @@ function randomFromInterval(from,to)
 {
     return Math.floor(Math.random()*(to-from+1)+from);
 }
-Manager.prototype.getRandom = function ( ) {
-    var keys = Object.keys(this.node.children);
+Manager.prototype.getLeastHeap = function ( ) {
+    var least = null;
 
-    var random = randomFromInterval(0,keys.length-1);
-    
-    var randomKey = keys[random];
-    //console.log(random, randomKey);
-    return this.node.children[randomKey];
+    for ( var key in this.node.children ) {
+        var current = this.node.children[key];
+        try {
+            var l = least.memoryUsage.heapUsed/least.memoryUsage.heapTotal;
+            var c = current.memoryUsage.heapUsed/current.memoryUsage.heapTotal;
+            if ( c < l ) {
+                least = current;
+            }
+        } catch ( e ) {
+            least = current;
+        }
+    }
+    return least;
+
 }
 
 
@@ -46,7 +55,7 @@ exports.createServer = function(node, port, host) {
         });
     });
     Bouncy({server:server}, function( req, res, bounce ) {
-        var remoteNode = manager.getRandom();
+        var remoteNode = manager.getLeastHeap();
         if ( remoteNode == undefined || remoteNode == null ){
             res.end("No server available");
             return;

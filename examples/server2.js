@@ -11,6 +11,7 @@ exports.createServer = function(node, port, host, text) {
     app.listen(port);
     process.node = node;
     app.get('/', function(req, res){
+        node.numRequests += 1;
         res.end(text);
     });
 };
