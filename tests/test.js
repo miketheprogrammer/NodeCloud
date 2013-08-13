@@ -1,9 +1,10 @@
 var test = require('tap').test;
 
-var Master = require("../lib/master");
-var Client = require("../lib/client");
-var Node = require('../lib/node');
-var Factory = require( '../lib/factory' );
+var NodeCloud = require("../index");
+var Master = NodeCloud.Master;
+var Client = NodeCloud.Client;
+var Node = NodeCloud.Node;
+var Factory = NodeCloud.Factory;
 
 (function mock () {
     Master.apply = function ( node ) {

@@ -28,7 +28,7 @@
   },
   "author": "Michael Hernandez <michael.hernandez1988@gmail.com>",
   "keywords": ["Node", "Stream", "Cluster", "child_process","spawn","child","master","slave","parent"],
-  "main": "./lib/index.js",
+  "main": "./index.js",
   "maintainers": [{
     "name": "Michael Hernandez",
     "email": "michael.hernandez1988@gmail.com",
