@@ -27,8 +27,11 @@ The API. ( Currently In active development. Simplicity is an eventual goal. )
 ==================
 The NodeCloud interface exposes 4 libraries.
 1. Node - The Base Node Class, Inherit from here to configure various nodes.
+
 2. Master - Exposes func .apply - Use this to add Master Capabilities to a Node
+
 3. Client - Exposes func .apply - Use this to add Client Capabilities to a Node
+
 4. Factor - Exposes function to create Master, Client, and an important helper function. Binding a web server to a Node
             and exposing it in the replication engine. 
 
@@ -73,9 +76,13 @@ sock.install(server, '/sock');
 
 All the above example really does is 
 1. Create a Master Node
+
 2. Create an HttpServer For Examining the nodes
+
 3. Create an API Http Server for making bounc request to children
+
 4. Create a Socket for the Frontend to connect to and get Events through a stream/
+
 5. Emit Update Events at intervals of 400 seconds
 
 
@@ -99,7 +106,9 @@ client = Factory.NodeFactory(client, {server: {
 ````
 The above:
 1. Creates a Client Node
+
 2. Creates a Web Server
+
 3. Passes the Client Node back to the factory with the Server Args
 
 
