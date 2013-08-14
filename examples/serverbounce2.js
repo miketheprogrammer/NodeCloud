@@ -42,19 +42,19 @@ exports.createServer = function(node, port, host) {
     server.on('connection', function ( stream ) {
         stream.setTimeout(1000*8);
         stream.on('close', function( had_error ) {
-
         });
     });
     Bouncy({server:server}, function( req, res, bounce ) {
         var remoteNode = manager.getRandom();
         if ( remoteNode == undefined || remoteNode == null ){
+            
             res.end("No server available");
             return;
         }
         var host = remoteNode.remoteAddress;
         var port = remoteNode.remotePort;
         if ( host )
-            bounce(host, port);
+            bounce(host, port).pipe(backpressure);
         else bounce(port);
     });
 };

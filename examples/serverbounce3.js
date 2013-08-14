@@ -1,7 +1,7 @@
 var http = require('http');
 var Bouncy = require('bouncy');
 var Manager = require("../lib/manager");
-
+var brake = require("brake");
 /*
   This example creates a server and bounces connections to the best host available.
 
@@ -55,11 +55,18 @@ exports.createServer = function(node, port, host) {
         });
     });
     Bouncy({server:server}, function( req, res, bounce ) {
+        //res.pipe(brake(2000)).pipe(res);
         var remoteNode = manager.getLeastHeap();
         if ( remoteNode == undefined || remoteNode == null ){
             res.end("No server available");
             return;
         }
+        res.on('close', function ( a ) {
+            //here we might want to
+            //de-count from a count of
+            //current load on a child
+            //to aid in routing
+        });
         var host = remoteNode.remoteAddress;
         var port = remoteNode.remotePort;
         if ( host )
