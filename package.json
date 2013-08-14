@@ -1,5 +1,5 @@
 {
-  "name": "NodeCloud",
+  "name": "nodecloud",
   "description": "An Evented Network Stream Clustering Solution.",
   "version": "0.4.0",
   "engines": {
